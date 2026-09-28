@@ -15,80 +15,105 @@ A React time tracking dashboard for Jira Cloud. View, add, edit, and delete work
 - English and Polish UI with language switcher
 - Dark mode flat design with Lucide icons
 
+## Security & privacy
+
+**This app never stores, transmits, or logs your Atlassian password or API token.**
+
+Authentication uses **OAuth 2.0 (3-Legged OAuth)** — the industry standard used by apps like Slack, Notion, and GitHub when connecting to third-party services. Here's exactly what happens:
+
+1. You click "Connect with Atlassian"
+2. You log in on **Atlassian's own domain** (`id.atlassian.com`) — your credentials go directly to Atlassian, never to this app or any server we control
+3. Atlassian issues a short-lived access token (valid for 1 hour) directly to your browser
+4. That token is stored only in your browser's `localStorage` and used solely to make Jira API requests on your behalf
+5. Tokens expire automatically and can be revoked at any time from your [Atlassian account security settings](https://id.atlassian.com/manage-profile/security)
+
+**The CORS proxy** (a small Vercel serverless function) exists only because browsers block direct cross-origin requests to Atlassian's API. It forwards your requests to Jira and returns the response — it sees only an opaque, short-lived Bearer token, never your password or any permanent credential. No request bodies or headers are logged.
+
 ## Using the app
 
-Open the live URL, click the Settings icon in the header and enter:
+Open the live URL and click **Connect with Atlassian**. You'll be redirected to Atlassian's login page, and after approving access you'll be brought back to the dashboard automatically.
 
-- **Space URL** — your Jira Cloud URL, e.g. `https://your-domain.atlassian.net`
-- **Email** — your Atlassian account email
-- **API Token** — generate one at https://id.atlassian.com/manage-profile/security/api-tokens
-
-Credentials are stored only in your browser's localStorage. They are sent directly to your Jira instance via the CORS proxy and never stored anywhere else.
+To disconnect, click the sign-out icon in the top-right corner at any time.
 
 ## Local development
 
 ```bash
 npm install
+```
+
+Create a `.env` file in the project root:
+
+```
+VITE_CLIENT_ID=lCoMV7CRQSSjlIvj5ViQ7OIXHianPOBY
+VITE_PROXY_URL=https://jira-time-tracker-proxy.vercel.app
+```
+
+Then start the dev server:
+
+```bash
 npm run dev
 ```
 
-No `.env` needed — credentials are entered in the app's Settings screen. The Vite dev server handles the Jira proxy automatically.
+The Vite dev server proxies Jira API requests locally so no CORS issues occur in development.
 
 ## Deployment
 
-The app consists of two parts:
+The app has two parts:
+
 1. **Static frontend** — deployed to GitHub Pages via GitHub Actions
-2. **CORS proxy** — a small Vercel serverless function that forwards requests to Jira
+2. **CORS proxy** — a Vercel serverless function that forwards Jira API requests
 
 ### Step 1 — Deploy the proxy to Vercel
 
 ```bash
-# Install Vercel CLI
-npm i -g vercel
-
-# Deploy from the proxy directory
 cd proxy
-vercel
+npx vercel --prod
 ```
 
-Follow the prompts — choose your personal account, create a new project named `jira-time-tracker-proxy`. When it asks for the root directory, confirm it's `proxy/`.
+Follow the prompts. Set these environment variables in the Vercel dashboard (project → Settings → Environment Variables):
 
-Note the deployment URL: `https://jira-time-tracker-proxy-<hash>.vercel.app`
+| Name             | Value                                  |
+| ---------------- | -------------------------------------- |
+| `VITE_CLIENT_ID` | Your Atlassian OAuth app Client ID     |
+| `CLIENT_SECRET`  | Your Atlassian OAuth app Client Secret |
 
-For a stable URL without the hash, go to the Vercel dashboard, open the project, and set a custom project name — then your URL will be `https://jira-time-tracker-proxy.vercel.app`.
+The `CLIENT_SECRET` lives **only** on Vercel — it is never exposed to the browser or committed to the repository.
 
-### Step 2 — Add the GitHub secret
+### Step 2 — Add GitHub secrets
 
 In your GitHub repo: **Settings → Secrets and variables → Actions → New repository secret**
 
-- Name: `VITE_PROXY_URL`
-- Value: your Vercel deployment URL (e.g. `https://jira-time-tracker-proxy.vercel.app`)
+| Name             | Value                              |
+| ---------------- | ---------------------------------- |
+| `VITE_PROXY_URL` | Your Vercel deployment URL         |
+| `VITE_CLIENT_ID` | Your Atlassian OAuth app Client ID |
 
 ### Step 3 — Enable GitHub Pages
 
 In your GitHub repo: **Settings → Pages → Source → GitHub Actions** → Save.
 
-### Step 4 — Push and deploy
+### Step 4 — Push to deploy
 
 ```bash
 git push origin main
 ```
 
-GitHub Actions will build and deploy automatically. The app will be live at:
-`https://lewando54.github.io/jira-time-tracker/`
+GitHub Actions builds and deploys automatically. The app will be live at:
+`https://<your-username>.github.io/jira-time-tracker/`
 
 ## Stack
 
-| Concern | Library |
-|---------|---------|
-| UI Framework | React 19 + TypeScript |
-| Build | Vite 8 |
-| State | Zustand 5 |
+| Concern       | Library                        |
+| ------------- | ------------------------------ |
+| UI Framework  | React 19 + TypeScript          |
+| Build         | Vite 8                         |
+| State         | Zustand 5                      |
 | Data fetching | Axios + TanStack React Query 5 |
-| UI components | Radix UI primitives |
-| Styling | Tailwind CSS v4 |
-| Icons | Lucide React |
-| i18n | react-i18next (EN + PL) |
-| Dates | date-fns |
-| Toasts | Sonner |
-| CORS proxy | Vercel Serverless Functions |
+| UI components | Radix UI primitives            |
+| Styling       | Tailwind CSS v4                |
+| Icons         | Lucide React                   |
+| i18n          | react-i18next (EN + PL)        |
+| Dates         | date-fns                       |
+| Toasts        | Sonner                         |
+| Auth          | Atlassian OAuth 2.0 (3LO)      |
+| CORS proxy    | Vercel Serverless Functions    |
