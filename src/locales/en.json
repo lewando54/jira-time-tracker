@@ -3,24 +3,19 @@
     "title": "Jira Time Tracker"
   },
   "nav": {
-    "settings": "Settings",
     "signOut": "Sign out"
   },
-  "settings": {
-    "title": "Settings",
-    "description": "Configure your Jira Cloud connection.",
-    "spaceUrl": "Space URL",
-    "spaceUrlPlaceholder": "https://your-domain.atlassian.net",
-    "email": "Email",
-    "emailPlaceholder": "your-email@example.com",
-    "apiToken": "API Token",
-    "apiTokenPlaceholder": "Your Atlassian API token",
-    "save": "Save & Connect",
-    "saving": "Connecting...",
-    "cancel": "Cancel",
-    "clearCredentials": "Clear Credentials",
-    "loginRequired": "Connect to Jira",
-    "loginDescription": "Enter your Jira Cloud credentials to get started."
+  "auth": {
+    "title": "Jira Time Tracker",
+    "description": "Connect your Atlassian account to start tracking time across your Jira issues.",
+    "connectButton": "Connect with Atlassian",
+    "privacyNote": "Your credentials are never stored on our servers. All data stays in your browser.",
+    "completing": "Completing sign-in…",
+    "loginFailed": "Sign-in failed",
+    "oauthError": "Atlassian returned an error: {{error}}",
+    "missingCode": "No authorization code received from Atlassian.",
+    "tokenError": "Failed to complete sign-in. Please try again.",
+    "tryAgain": "Try again"
   },
   "period": {
     "week": "Week",
@@ -62,10 +57,10 @@
     "logged": "Logged {{time}} by {{author}}"
   },
   "errors": {
-    "sessionExpired": "Session expired. Please re-enter your credentials.",
+    "sessionExpired": "Session expired. Please reconnect.",
     "rateLimited": "Rate limited. Please wait a moment and try again.",
     "networkError": "Network error. Check your connection.",
-    "unauthorized": "Authentication failed. Check your credentials.",
+    "unauthorized": "Authentication failed. Please reconnect.",
     "notFound": "Resource not found.",
     "unknown": "An unexpected error occurred.",
     "fetchIssues": "Failed to load issues.",

@@ -3,24 +3,19 @@
     "title": "Jira Time Tracker"
   },
   "nav": {
-    "settings": "Ustawienia",
     "signOut": "Wyloguj"
   },
-  "settings": {
-    "title": "Ustawienia",
-    "description": "Skonfiguruj połączenie z Jira Cloud.",
-    "spaceUrl": "Adres URL przestrzeni",
-    "spaceUrlPlaceholder": "https://twoja-domena.atlassian.net",
-    "email": "Adres e-mail",
-    "emailPlaceholder": "twoj-email@przyklad.com",
-    "apiToken": "Token API",
-    "apiTokenPlaceholder": "Twój token API Atlassian",
-    "save": "Zapisz i połącz",
-    "saving": "Łączenie...",
-    "cancel": "Anuluj",
-    "clearCredentials": "Wyczyść dane logowania",
-    "loginRequired": "Połącz z Jira",
-    "loginDescription": "Wprowadź dane uwierzytelniające Jira Cloud, aby rozpocząć."
+  "auth": {
+    "title": "Jira Time Tracker",
+    "description": "Połącz swoje konto Atlassian, aby rozpocząć śledzenie czasu w zadaniach Jira.",
+    "connectButton": "Połącz z Atlassian",
+    "privacyNote": "Twoje dane logowania nigdy nie są przechowywane na naszych serwerach. Wszystkie dane pozostają w Twojej przeglądarce.",
+    "completing": "Finalizowanie logowania…",
+    "loginFailed": "Logowanie nie powiodło się",
+    "oauthError": "Atlassian zwrócił błąd: {{error}}",
+    "missingCode": "Brak kodu autoryzacyjnego od Atlassian.",
+    "tokenError": "Nie udało się ukończyć logowania. Spróbuj ponownie.",
+    "tryAgain": "Spróbuj ponownie"
   },
   "period": {
     "week": "Tydzień",
@@ -62,10 +57,10 @@
     "logged": "Zalogowano {{time}} przez {{author}}"
   },
   "errors": {
-    "sessionExpired": "Sesja wygasła. Wprowadź ponownie dane logowania.",
+    "sessionExpired": "Sesja wygasła. Połącz się ponownie.",
     "rateLimited": "Przekroczono limit zapytań. Poczekaj chwilę i spróbuj ponownie.",
     "networkError": "Błąd sieci. Sprawdź połączenie.",
-    "unauthorized": "Błąd uwierzytelniania. Sprawdź dane logowania.",
+    "unauthorized": "Błąd uwierzytelniania. Połącz się ponownie.",
     "notFound": "Nie znaleziono zasobu.",
     "unknown": "Wystąpił nieoczekiwany błąd.",
     "fetchIssues": "Nie udało się załadować zadań.",

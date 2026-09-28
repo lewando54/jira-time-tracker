@@ -1,44 +1,53 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-interface AuthCredentials {
-  spaceUrl: string
-  email: string
-  apiToken: string
+export interface OAuthSession {
+  accessToken: string
+  refreshToken: string
+  cloudId: string
+  spaceUrl: string    // e.g. https://your-domain.atlassian.net (for links)
+  expiresAt: number  // unix ms
 }
 
 interface AuthState {
-  credentials: AuthCredentials | null
-  setCredentials: (credentials: AuthCredentials) => void
-  clearCredentials: () => void
-  hasCredentials: () => boolean
-}
-
-const getEnvDefaults = (): AuthCredentials | null => {
-  const spaceUrl = import.meta.env.VITE_JIRA_URL as string | undefined
-  const email = import.meta.env.VITE_JIRA_EMAIL as string | undefined
-  const apiToken = import.meta.env.VITE_JIRA_API_TOKEN as string | undefined
-  if (spaceUrl && email && apiToken) {
-    return { spaceUrl, email, apiToken }
-  }
-  return null
+  session: OAuthSession | null
+  setSession: (session: OAuthSession) => void
+  updateTokens: (accessToken: string, refreshToken: string, expiresIn: number) => void
+  clearSession: () => void
+  isAuthenticated: () => boolean
+  isTokenExpired: () => boolean
 }
 
 export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
-      credentials: getEnvDefaults(),
-      setCredentials: (credentials) => set({ credentials }),
-      clearCredentials: () => set({ credentials: null }),
-      hasCredentials: () => {
-        const { credentials } = get()
-        return !!(credentials?.spaceUrl && credentials?.email && credentials?.apiToken)
+      session: null,
+
+      setSession: (session) => set({ session }),
+
+      updateTokens: (accessToken, refreshToken, expiresIn) =>
+        set((state) => ({
+          session: state.session
+            ? {
+                ...state.session,
+                accessToken,
+                refreshToken,
+                expiresAt: Date.now() + expiresIn * 1000,
+              }
+            : null,
+        })),
+
+      clearSession: () => set({ session: null }),
+
+      isAuthenticated: () => !!get().session,
+
+      isTokenExpired: () => {
+        const { session } = get()
+        if (!session) return true
+        // Consider expired 60 seconds before actual expiry
+        return Date.now() > session.expiresAt - 60_000
       },
     }),
-    {
-      name: 'jira-auth',
-      // Don't persist env-seeded credentials — only user-entered ones
-      partialize: (state) => ({ credentials: state.credentials }),
-    }
+    { name: 'jira-oauth-session' }
   )
 )

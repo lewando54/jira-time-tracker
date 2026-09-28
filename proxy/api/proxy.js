@@ -1,52 +1,46 @@
 /**
  * Vercel Serverless Function — Jira CORS Proxy
  *
- * Receives all /rest/* requests from the GitHub Pages app,
- * forwards them to the user's Jira Cloud instance, and returns
- * the response with CORS headers so the browser accepts it.
+ * Forwards requests to Jira Cloud using an OAuth Bearer token.
+ * The target Jira site is identified by the x-cloud-id header.
  *
  * Required headers from the client:
- *   x-jira-url     — e.g. https://your-domain.atlassian.net
- *   Authorization  — Basic <base64(email:apiToken)>
+ *   Authorization  — Bearer <access_token>
+ *   x-cloud-id     — the Atlassian cloud ID (from token exchange)
  */
 
 const ALLOWED_ORIGIN_RE = /^https:\/\/([\w-]+\.github\.io|localhost(:\d+)?)$/
+const JIRA_API_BASE = 'https://api.atlassian.com/ex/jira'
 
 export default async function handler(req, res) {
   const origin = req.headers['origin'] ?? ''
   const cors = buildCorsHeaders(origin)
 
-  // CORS preflight
   if (req.method === 'OPTIONS') {
     res.writeHead(204, cors)
     res.end()
     return
   }
 
-  const jiraUrl = req.headers['x-jira-url']
   const authorization = req.headers['authorization']
+  const cloudId = req.headers['x-cloud-id']
 
-  if (!jiraUrl || !authorization) {
+  if (!authorization || !cloudId) {
     res.writeHead(400, { 'Content-Type': 'application/json', ...cors })
-    res.end(JSON.stringify({ error: 'Missing x-jira-url or Authorization header' }))
+    res.end(JSON.stringify({ error: 'Missing Authorization or x-cloud-id header' }))
     return
   }
 
-  // Validate Jira URL
-  let parsed
-  try {
-    parsed = new URL(jiraUrl)
-    if (!parsed.hostname.endsWith('.atlassian.net')) throw new Error()
-  } catch {
-    res.writeHead(400, { 'Content-Type': 'application/json', ...cors })
-    res.end(JSON.stringify({ error: 'x-jira-url must be an atlassian.net domain' }))
+  if (!authorization.startsWith('Bearer ')) {
+    res.writeHead(401, { 'Content-Type': 'application/json', ...cors })
+    res.end(JSON.stringify({ error: 'Only Bearer token auth is supported' }))
     return
   }
 
-  // Build target: swap origin for jiraUrl, keep path + query
-  const target = new URL(req.url, jiraUrl)
+  // Build target: https://api.atlassian.com/ex/jira/\{cloudId\}/rest/api/3/...
+  // req.url is the path after /rest, e.g. /api/3/myself
+  const target = `${JIRA_API_BASE}/${cloudId}/rest${req.url}`
 
-  // Read body for mutating methods
   const body =
     ['GET', 'HEAD', 'DELETE'].includes(req.method)
       ? undefined
@@ -54,7 +48,7 @@ export default async function handler(req, res) {
 
   let jiraRes
   try {
-    jiraRes = await fetch(target.toString(), {
+    jiraRes = await fetch(target, {
       method: req.method,
       headers: {
         authorization,
@@ -69,7 +63,6 @@ export default async function handler(req, res) {
     return
   }
 
-  // Forward response headers (minus hop-by-hop)
   const skip = new Set(['transfer-encoding', 'connection', 'keep-alive', 'content-encoding'])
   const outHeaders = { ...cors }
   for (const [k, v] of jiraRes.headers.entries()) {
@@ -77,7 +70,6 @@ export default async function handler(req, res) {
   }
 
   res.writeHead(jiraRes.status, outHeaders)
-
   const buf = await jiraRes.arrayBuffer()
   res.end(Buffer.from(buf))
 }
@@ -87,7 +79,7 @@ function buildCorsHeaders(origin) {
   return {
     'Access-Control-Allow-Origin': allowedOrigin,
     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-    'Access-Control-Allow-Headers': 'Authorization, Content-Type, Accept, x-jira-url',
+    'Access-Control-Allow-Headers': 'Authorization, Content-Type, Accept, x-cloud-id',
     'Access-Control-Allow-Credentials': 'true',
     'Access-Control-Max-Age': '86400',
   }

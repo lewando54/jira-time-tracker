@@ -4,7 +4,7 @@ import { usePeriodStore } from '@/store/periodStore'
 import { useQuery } from '@tanstack/react-query'
 
 export function useIssueWorklogs(issueKey: string) {
-  const hasCredentials = useAuthStore((s) => s.hasCredentials())
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated())
   const { periodRange } = usePeriodStore()
   const startMs = periodRange.start.getTime()
   const endMs = periodRange.end.getTime()
@@ -12,7 +12,7 @@ export function useIssueWorklogs(issueKey: string) {
   return useQuery({
     queryKey: ['worklogs', issueKey, startMs, endMs],
     queryFn: () => getIssueWorklogs(issueKey, startMs, endMs),
-    enabled: !!issueKey && hasCredentials,
+    enabled: !!issueKey && isAuthenticated,
     staleTime: 2 * 60 * 1000,
   })
 }

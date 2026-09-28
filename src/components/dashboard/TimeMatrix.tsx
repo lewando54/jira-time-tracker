@@ -251,7 +251,7 @@ export function TimeMatrix() {
   const { daysInPeriod } = usePeriodStore()
   const { data: fetchedIssues, isLoading: issuesLoading } = useIssuesWithWorklogs()
   const { pinnedTaskKeys, unpinTask } = useTasksStore()
-  const spaceUrl = useAuthStore((s) => s.credentials?.spaceUrl ?? '')
+  const spaceUrl = useAuthStore((s) => s.session?.spaceUrl ?? '')
 
   const fetchedKeys = (fetchedIssues ?? []).map((i) => i.key)
   const extraPinnedKeys = pinnedTaskKeys.filter((k) => !fetchedKeys.includes(k))
