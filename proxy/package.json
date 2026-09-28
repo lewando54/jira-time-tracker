@@ -1,0 +1,9 @@
+{
+  "name": "jira-time-tracker-proxy",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CORS proxy for jira-time-tracker — deployed on Vercel",
+  "engines": {
+    "node": ">=18"
+  }
+}
