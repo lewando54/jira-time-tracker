@@ -1,0 +1,85 @@
+{
+  "app": {
+    "title": "Jira Time Tracker"
+  },
+  "nav": {
+    "settings": "Ustawienia",
+    "signOut": "Wyloguj"
+  },
+  "settings": {
+    "title": "Ustawienia",
+    "description": "Skonfiguruj połączenie z Jira Cloud.",
+    "spaceUrl": "Adres URL przestrzeni",
+    "spaceUrlPlaceholder": "https://twoja-domena.atlassian.net",
+    "email": "Adres e-mail",
+    "emailPlaceholder": "twoj-email@przyklad.com",
+    "apiToken": "Token API",
+    "apiTokenPlaceholder": "Twój token API Atlassian",
+    "save": "Zapisz i połącz",
+    "saving": "Łączenie...",
+    "cancel": "Anuluj",
+    "clearCredentials": "Wyczyść dane logowania",
+    "loginRequired": "Połącz z Jira",
+    "loginDescription": "Wprowadź dane uwierzytelniające Jira Cloud, aby rozpocząć."
+  },
+  "period": {
+    "week": "Tydzień",
+    "month": "Miesiąc",
+    "weekLabel": "Tydzień {{week}} · {{start}} – {{end}}",
+    "monthLabel": "{{month}} {{year}}"
+  },
+  "matrix": {
+    "total": "Suma",
+    "addTask": "Dodaj zadanie",
+    "searchPlaceholder": "Szukaj zadań...",
+    "searchNoResults": "Nie znaleziono zadań.",
+    "searchHint": "Wpisz, aby wyszukać zadania w Jira",
+    "removeTask": "Usuń zadanie z widoku",
+    "noTasks": "Brak zalogowanego czasu w tym okresie",
+    "noTasksDescription": "Dodaj zadanie, aby rozpocząć śledzenie czasu.",
+    "hours": "{{hours}}h",
+    "hoursMinutes": "{{hours}}h {{minutes}}m",
+    "minutes": "{{minutes}}m"
+  },
+  "worklog": {
+    "title": "Wpisy czasu",
+    "titleWithDate": "{{key}} — {{date}}",
+    "addEntry": "Dodaj wpis",
+    "editEntry": "Edytuj wpis",
+    "noEntries": "Brak zalogowanego czasu dla tego dnia.",
+    "hours": "Godziny",
+    "hoursPlaceholder": "np. 1.5",
+    "comment": "Komentarz",
+    "commentPlaceholder": "Nad czym pracowałeś?",
+    "save": "Zapisz",
+    "cancel": "Anuluj",
+    "delete": "Usuń",
+    "edit": "Edytuj",
+    "confirmDelete": "Usunąć wpis czasu?",
+    "confirmDeleteDescription": "To trwale usunie ten wpis czasu z Jiry.",
+    "confirmDeleteButton": "Usuń",
+    "cancelDelete": "Anuluj",
+    "logged": "Zalogowano {{time}} przez {{author}}"
+  },
+  "errors": {
+    "sessionExpired": "Sesja wygasła. Wprowadź ponownie dane logowania.",
+    "rateLimited": "Przekroczono limit zapytań. Poczekaj chwilę i spróbuj ponownie.",
+    "networkError": "Błąd sieci. Sprawdź połączenie.",
+    "unauthorized": "Błąd uwierzytelniania. Sprawdź dane logowania.",
+    "notFound": "Nie znaleziono zasobu.",
+    "unknown": "Wystąpił nieoczekiwany błąd.",
+    "fetchIssues": "Nie udało się załadować zadań.",
+    "fetchWorklogs": "Nie udało się załadować wpisów czasu.",
+    "addWorklog": "Nie udało się dodać wpisu czasu.",
+    "updateWorklog": "Nie udało się zaktualizować wpisu czasu.",
+    "deleteWorklog": "Nie udało się usunąć wpisu czasu."
+  },
+  "success": {
+    "addWorklog": "Wpis czasu dodany.",
+    "updateWorklog": "Wpis czasu zaktualizowany.",
+    "deleteWorklog": "Wpis czasu usunięty."
+  },
+  "loading": {
+    "connecting": "Łączenie z Jira..."
+  }
+}

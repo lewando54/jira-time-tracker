@@ -1,0 +1,85 @@
+{
+  "app": {
+    "title": "Jira Time Tracker"
+  },
+  "nav": {
+    "settings": "Settings",
+    "signOut": "Sign out"
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Configure your Jira Cloud connection.",
+    "spaceUrl": "Space URL",
+    "spaceUrlPlaceholder": "https://your-domain.atlassian.net",
+    "email": "Email",
+    "emailPlaceholder": "your-email@example.com",
+    "apiToken": "API Token",
+    "apiTokenPlaceholder": "Your Atlassian API token",
+    "save": "Save & Connect",
+    "saving": "Connecting...",
+    "cancel": "Cancel",
+    "clearCredentials": "Clear Credentials",
+    "loginRequired": "Connect to Jira",
+    "loginDescription": "Enter your Jira Cloud credentials to get started."
+  },
+  "period": {
+    "week": "Week",
+    "month": "Month",
+    "weekLabel": "Week {{week}} · {{start}} – {{end}}",
+    "monthLabel": "{{month}} {{year}}"
+  },
+  "matrix": {
+    "total": "Total",
+    "addTask": "Add Task",
+    "searchPlaceholder": "Search issues...",
+    "searchNoResults": "No issues found.",
+    "searchHint": "Type to search for Jira issues",
+    "removeTask": "Remove task from view",
+    "noTasks": "No time logged this period",
+    "noTasksDescription": "Add a task to start tracking time.",
+    "hours": "{{hours}}h",
+    "hoursMinutes": "{{hours}}h {{minutes}}m",
+    "minutes": "{{minutes}}m"
+  },
+  "worklog": {
+    "title": "Worklogs",
+    "titleWithDate": "{{key}} — {{date}}",
+    "addEntry": "Add entry",
+    "editEntry": "Edit entry",
+    "noEntries": "No time logged for this day.",
+    "hours": "Hours",
+    "hoursPlaceholder": "e.g. 1.5",
+    "comment": "Comment",
+    "commentPlaceholder": "What did you work on?",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "confirmDelete": "Delete worklog entry?",
+    "confirmDeleteDescription": "This will permanently remove this worklog entry from Jira.",
+    "confirmDeleteButton": "Delete",
+    "cancelDelete": "Cancel",
+    "logged": "Logged {{time}} by {{author}}"
+  },
+  "errors": {
+    "sessionExpired": "Session expired. Please re-enter your credentials.",
+    "rateLimited": "Rate limited. Please wait a moment and try again.",
+    "networkError": "Network error. Check your connection.",
+    "unauthorized": "Authentication failed. Check your credentials.",
+    "notFound": "Resource not found.",
+    "unknown": "An unexpected error occurred.",
+    "fetchIssues": "Failed to load issues.",
+    "fetchWorklogs": "Failed to load worklogs.",
+    "addWorklog": "Failed to add worklog entry.",
+    "updateWorklog": "Failed to update worklog entry.",
+    "deleteWorklog": "Failed to delete worklog entry."
+  },
+  "success": {
+    "addWorklog": "Worklog entry added.",
+    "updateWorklog": "Worklog entry updated.",
+    "deleteWorklog": "Worklog entry deleted."
+  },
+  "loading": {
+    "connecting": "Connecting to Jira..."
+  }
+}
