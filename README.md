@@ -15,6 +15,8 @@ A React time tracking dashboard for Jira Cloud. View, add, edit, and delete work
 - English and Polish UI with language switcher
 - Dark mode flat design with Lucide icons
 
+![Jira Time Tracker — time matrix](https://lewando54.github.io/jira-time-tracker/image.png)
+
 ## Security & privacy
 
 **This app never stores, transmits, or logs your Atlassian password or API token.**
